@@ -15,6 +15,13 @@ class TaskSerializer(serializers.Serializer):
             description=validated_data['description'],
             completed=validated_data['completed']
         )
+    
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title', instance.title)
+        instance.description = validated_data['description']
+        instance.completed = validated_data['completed']
+        instance.save()
+        return instance
 
     def to_representation(self, instance):
         return {
