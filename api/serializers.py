@@ -1,15 +1,26 @@
 from rest_framework import serializers
 
+from .models import Task
+from datetime import datetime
+
 
 class TaskSerializer(serializers.Serializer):
-    title = serializers.CharField(read_only=True, max_length=200)
-    description = serializers.CharField(read_only=True)
-    completed = serializers.BooleanField(read_only=True, default=False, allow_null=True)
-    created_at = serializers.DateTimeField()
+    title = serializers.CharField(max_length=200)
+    description = serializers.CharField()
+    completed = serializers.BooleanField(default=False, allow_null=True)
+
+    def create(self, validated_data):
+        return Task.objects.create(
+            title=validated_data['title'],
+            description=validated_data['description'],
+            completed=validated_data['completed']
+        )
 
     def to_representation(self, instance):
         return {
-            'pk': instance.id,
-            'sarlavha': instance.title,
-            'description': f'{instance.description[:20]}... at {instance.created_at}'
+            'id': instance.id,
+            'title': instance.title,
+            'description': instance.description,
+            'completed': instance.completed,
+            'created_at': instance.created_at.strftime('%Y-%m-%d %H:%M:%S')
         }

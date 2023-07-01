@@ -20,4 +20,12 @@ class TaskView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Task.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    def post(self, request: Request) -> Response:
+        serializer = TaskSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
