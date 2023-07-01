@@ -18,8 +18,8 @@ class TaskSerializer(serializers.Serializer):
     
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
-        instance.description = validated_data['description']
-        instance.completed = validated_data['completed']
+        instance.description = validated_data.get('description', instance.description)
+        instance.completed = validated_data.get('completed', instance.completed)
         instance.save()
         return instance
 
