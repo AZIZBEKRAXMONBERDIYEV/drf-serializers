@@ -1,15 +1,18 @@
 from rest_framework import serializers
-
+from django.contrib.auth.models import User
 from .models import Task
+
+
 
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = '__all__'
-    
-    def to_representation(self, instance: Task):
-        return {
-            "id": instance.id,
-            "title": instance.title,
-            'description': instance.description
-        }
+
+
+class UserSerializer(serializers.ModelSerializer):
+    tasks = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = User
+        fields =['id', 'username', 'tasks']
