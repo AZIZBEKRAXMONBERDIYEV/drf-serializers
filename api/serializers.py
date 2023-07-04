@@ -11,7 +11,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    tasks = serializers.StringRelatedField(many=True)
+    tasks = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = User
